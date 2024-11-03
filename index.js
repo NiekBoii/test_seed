@@ -30,6 +30,7 @@ app.get("/data", async (req, res) => {
 });
 
 app.all("/lifecheck", (req,res) => {
+    console.log("lifecheck.");
     res.status(httpStatus.OK).json({success: true})
 })
 
