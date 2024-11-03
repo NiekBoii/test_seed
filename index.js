@@ -29,6 +29,10 @@ app.get("/data", async (req, res) => {
     res.end()
 });
 
+app.get("/lifecheck", (req,res) => {
+    res.status(httpStatus.OK).json({success: true})
+})
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
