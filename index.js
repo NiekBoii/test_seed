@@ -14,7 +14,9 @@ app.get("/data", async (req, res) => {
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
     let take = 1000;
-    while (take < 25000){
+    while (take <= 25000){
+        console.log(`Take: ${take}`);
+        await sleep(1000)
         const result = await prisma.data_seed.findMany({
             take: take,
             skip: take - 1000
@@ -22,9 +24,15 @@ app.get("/data", async (req, res) => {
         take += 1000
         res.write(JSON.stringify(result))
     }
+    console.log("Done response.");
     res.end()
 });
 
-app.listen(8080, "localhost", () => {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+app.listen(8080 ,() => {
     console.log('Listening.');
 });
