@@ -29,7 +29,7 @@ app.get("/data", async (req, res) => {
     res.end()
 });
 
-app.get("/lifecheck", (req,res) => {
+app.all("/lifecheck", (req,res) => {
     res.status(httpStatus.OK).json({success: true})
 })
 
