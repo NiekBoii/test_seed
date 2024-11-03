@@ -14,6 +14,7 @@ app.get("/data", async (req, res) => {
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
     let take = 1000;
+    console.log("Request");
     while (take <= 25000){
         console.log(`Take: ${take}`);
         await sleep(1000)
