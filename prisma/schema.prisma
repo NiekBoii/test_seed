@@ -1,14 +1,28 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model data {
+  id             Int     @id @default(autoincrement()) @db.UnsignedInt
+  measurement_id Int     @db.UnsignedInt
+  key            String  @db.VarChar(255)
+  value          String? @db.VarChar(255)
+  channel_id     Int?    @db.UnsignedInt
+}
+
+model data_seed {
+  id             Int     @id @default(autoincrement()) @db.UnsignedInt
+  measurement_id Int     @db.UnsignedInt
+  key            String  @db.VarChar(255)
+  value          String? @db.VarChar(255)
+  channel_id     Int?    @db.UnsignedInt
+
+  @@index([channel_id, measurement_id], map: "measurement_data_channel_id_measurement_id_index")
+  @@index([measurement_id, channel_id], map: "measurement_data_measurement_id_channel_id_index")
+  @@index([measurement_id], map: "measurement_data_measurements_id_fk")
 }
