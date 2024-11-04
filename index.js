@@ -23,7 +23,7 @@ app.get("/data", async (req, res) => {
             skip: take - 1000
         });
         take += 1000
-        res.write(JSON.stringify(result))
+        res.write("data:" + JSON.stringify(result))
     }
     console.log("Done response.");
     res.end()
