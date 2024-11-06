@@ -8,21 +8,35 @@ datasource db {
 }
 
 model data {
-  id             Int     @id @default(autoincrement()) @db.UnsignedInt
-  measurement_id Int     @db.UnsignedInt
-  key            String  @db.VarChar(255)
-  value          String? @db.VarChar(255)
-  channel_id     Int?    @db.UnsignedInt
+  id             Int      @id @default(autoincrement()) @db.UnsignedInt
+  measurement_id Int      @db.UnsignedInt
+  key            String   @db.VarChar(255)
+  value          String?  @db.VarChar(255)
+  channel_id     Int?     @db.UnsignedInt
+  start_window   DateTime @db.DateTime(0)
+  end_window     DateTime @db.DateTime(0)
 }
 
 model data_seed {
-  id             Int     @id @default(autoincrement()) @db.UnsignedInt
-  measurement_id Int     @db.UnsignedInt
-  key            String  @db.VarChar(255)
-  value          String? @db.VarChar(255)
-  channel_id     Int?    @db.UnsignedInt
+  id             Int          @id @default(autoincrement()) @db.UnsignedInt
+  measurement_id Int          @db.UnsignedInt
+  key            String       @db.VarChar(255)
+  value          String?      @db.VarChar(255)
+  channel_id     Int?         @db.UnsignedInt
+  datetime       DateTime?    @db.DateTime(0)
+  measurements   measurements @relation(fields: [measurement_id], references: [id], onDelete: Cascade, map: "measurement_data_measurements_id_fk")
 
   @@index([channel_id, measurement_id], map: "measurement_data_channel_id_measurement_id_index")
   @@index([measurement_id, channel_id], map: "measurement_data_measurement_id_channel_id_index")
   @@index([measurement_id], map: "measurement_data_measurements_id_fk")
+}
+
+model measurements {
+  id        Int         @id @default(autoincrement()) @db.UnsignedInt
+  sensor_id Int         @db.UnsignedInt
+  datetime  DateTime    @default(now()) @db.DateTime(0)
+  data_seed data_seed[]
+
+  @@index([sensor_id, datetime], map: "measurements_sensor_id_datetime_index")
+  @@index([sensor_id], map: "measurements_sensors_id_fk")
 }

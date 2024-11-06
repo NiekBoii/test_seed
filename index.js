@@ -17,7 +17,7 @@ app.get("/data", async (req, res) => {
     console.log("Request");
     while (take <= 25000){
         console.log(`Take: ${take}`);
-        await sleep(1000)
+        // await sleep(1000)
         const result = await prisma.data_seed.findMany({
             take: take,
             skip: take - 1000
